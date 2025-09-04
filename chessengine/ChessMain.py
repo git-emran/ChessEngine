@@ -43,6 +43,8 @@ def main():
             if e.type == p.QUIT:
                 running = False
 
+            # mouse handlers
+
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()
                 col = location[0] // SQ_SIZE
@@ -61,6 +63,11 @@ def main():
                     gs.makeMove(move)
                     sqSelected = ()
                     playerClicks = []
+
+            # key handlers
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:
+                    gs.undoMove()
 
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)

@@ -28,14 +28,15 @@ def loadImages():
 def main():
     p.init()
 
-    screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
+    screen = p.display.set_mode((WIDTH, HEIGHT))
     screen.fill(p.Color("white"))
-
     gs = ChessEngine.GameState()
+    validMoves = gs.getValidMoves()
+    moveMade = gs.getValidMoves()
     loadImages()
     running = True
-    sqSelected = ()  # no squares selected initially, but keep track of the last click of the user
+    sqSelected = ()  # no squares selected initially, keep track of last click
     playerClicks = []  # keep track of the player clicks
 
     while running:
@@ -50,7 +51,7 @@ def main():
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
 
-                if sqSelected == (row, col):  # the user clicked the same square twice
+                if sqSelected == (row, col):
                     sqSelected = ()  # deselect
                     playerClicks = []  # clear the player click
                 else:
@@ -60,7 +61,9 @@ def main():
                 if len(playerClicks) == 2:
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
                     print(move.getChessNotation())
-                    gs.makeMove(move)
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        moveMade = True
                     sqSelected = ()
                     playerClicks = []
 
@@ -68,7 +71,11 @@ def main():
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:
                     gs.undoMove()
+                    moveMade = True
 
+        if moveMade:
+            validMoves = gs.getValidMoves()
+            moveMade = False
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()

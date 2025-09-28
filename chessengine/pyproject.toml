@@ -1,0 +1,3 @@
+[tool.pylsp]
+plugins.pycodestyle.enabled = true
+plugins.pycodestyle.max_line_length = 120 # or any other value

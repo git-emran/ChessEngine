@@ -11,6 +11,15 @@ class GameState:
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"],
         ]
 
+        self.moveFunctions = {
+            "p": self.getPawnmoves,
+            "R": self.getPawnMoves,
+            "N": self.getKnightMoves,
+            "B": self.getBishopMoves,
+            "Q": self.getQueenMoves,
+            "K": self.getKingMoves,
+        }
+
         self.whiteToMove = True
         self.moveLog = []
 
@@ -47,18 +56,38 @@ class GameState:
                 ):
                     piece = self.board[r][c][1]
 
-                    if piece == "p":
-                        self.getPawnMoves(r, c, moves)
-
-                    elif piece == "R":
-                        self.getRookMoves(r, c, moves)
+                    # calls the appropriate move functions
+                    self.moveFunctions[piece](r, c, moves)
 
         return moves
 
     def getPawnMoves(self, r, c, moves):
-        pass
+        if self.whiteToMove:
+            if self.board[r - 1][c] == "--":
+                moves.append(Move((r, c), (r - 1, c), self.board))
+                if r == 6 and self.board[r - 2][c] == "--":
+                    moves.append(Move((r, c), (r - 2, c), self.board))
+
+            if c - 1 >= 0:
+                if self.board[r - 1][c - 1][0] == "b":
+                    moves.append(Move((r, c), (r - 1, c - 1), self.board))
+            if c + 1 <= 7:
+                if self.board[r - 1][c + 1][0] == "b":
+                    moves.append(Move((r, c), (r - 1, c + 1), self.board))
 
     def getRookMoves(self, r, c, moves):
+        pass
+
+    def getKnightMoves(self, r, c, moves):
+        pass
+
+    def getBishopMoves(self, r, c, moves):
+        pass
+
+    def getQueenMoves(self, r, c, moves):
+        pass
+
+    def getKingMoves(self, r, c, moves):
         pass
 
 
@@ -79,16 +108,13 @@ class Move:
             self.startRow * 1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
         )
 
-        print(self.moveID)
-
     def __eq__(self, other):
         if isinstance(other, Move):
             return self.moveID == other.moveID
 
     def getChessNotation(self):
-        return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(
-            self.endRow, self.endCol
-        )
+        return self.getRankFile(self.startRow, self.startCol)
+        +self.getRankFile(self.endRow, self.endCol)
 
     def getRankFile(self, r, c):
         return self.colsToFiles[c] + self.rowsToRanks[r]

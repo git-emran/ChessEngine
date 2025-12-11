@@ -12,7 +12,7 @@ class GameState:
         ]
 
         self.moveFunctions = {
-            "p": self.getPawnmoves,
+            "p": self.getPawnMoves,
             "R": self.getPawnMoves,
             "N": self.getKnightMoves,
             "B": self.getBishopMoves,
@@ -75,19 +75,19 @@ class GameState:
                 if self.board[r - 1][c + 1][0] == "b":
                     moves.append(Move((r, c), (r - 1, c + 1), self.board))
 
-        else:
+        else: # black pawn moves
             if self.board[r + 1][c] == "--":
-                moves.append(Move((r, c), (r - 1, c), self.board))
+                moves.append(Move((r, c), (r + 1, c), self.board))
                 if r == 1 and self.board[r + 2][c] == "--":
                     moves.append(Move((r, c), (r + 2, c), self.board))
             # captures
 
             if c - 1 >= 0:  # capture to left
                 if self.board[r + 1][c - 1][0] == "w":
-                    moves.append(Move(r, c), (r + 1, c - 1), self.board)
+                    moves.append(Move((r, c), (r + 1, c - 1), self.board))
             if c + 1 <= 7:  # capture to the right
                 if self.board[r + 1][c + 1][0] == "w":
-                    moves.append(Move(r, c), (r + 1, c + 1), self.board)
+                    moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
     def getRookMoves(self, r, c, moves):
         directions = ((-1, 0), (0, -1), (1, 0), (0, 1))
@@ -101,9 +101,9 @@ class GameState:
                 if 0 <= endRow < 8 and 0 <= endCol < 8:
                     endPiece = self.board[endRow][endCol]
                     if endPiece == "--":  # empty space is valid
-                        moves.append(Move(r, c), (endRow, endCol), self.board)
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
                     elif endPiece[0] == enemyColor:  # enemy piece valid
-                        moves.append(Move(r, c), (endRow, endCol), self.board)
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
                         break
                     else:  # friendly piece invalid
                         break
@@ -124,8 +124,8 @@ class GameState:
 
 
 class Move:
-    rankstoRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
-    rowsToRanks = {v: k for k, v in rankstoRows.items()}
+    ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
+    rowsToRanks = {v: k for k, v in ranksToRows.items()}
     filesToCols = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
     colsToFiles = {v: k for k, v in filesToCols.items()}
 
@@ -146,7 +146,7 @@ class Move:
 
     def getChessNotation(self):
         return self.getRankFile(self.startRow, self.startCol)
-        +self.getRankFile(self.endRow, self.endCol)
+        + self.getRankFile(self.endRow, self.endCol)
 
     def getRankFile(self, r, c):
         return self.colsToFiles[c] + self.rowsToRanks[r]

@@ -75,7 +75,7 @@ class GameState:
                 if self.board[r - 1][c + 1][0] == "b":
                     moves.append(Move((r, c), (r - 1, c + 1), self.board))
 
-        else: # black pawn moves
+        else:  # black pawn moves
             if self.board[r + 1][c] == "--":
                 moves.append(Move((r, c), (r + 1, c), self.board))
                 if r == 1 and self.board[r + 2][c] == "--":
@@ -146,7 +146,8 @@ class Move:
 
     def getChessNotation(self):
         return self.getRankFile(self.startRow, self.startCol)
-        + self.getRankFile(self.endRow, self.endCol)
+        +self.getRankFile(self.endRow, self.endCol)
 
     def getRankFile(self, r, c):
         return self.colsToFiles[c] + self.rowsToRanks[r]
+

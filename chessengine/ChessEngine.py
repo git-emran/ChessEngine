@@ -96,7 +96,7 @@ class GameState:
         for d in directions:
             for i in range(1, 8):
                 endRow = r + d[0] * i
-                endCol = c + d[i] * i
+                endCol = c + d[1] * i
 
                 if 0 <= endRow < 8 and 0 <= endCol < 8:
                     endPiece = self.board[endRow][endCol]
@@ -155,7 +155,8 @@ class GameState:
                     moves.append(Move((r, c), (endRow, endCol), self.board))
 
     def getQueenMoves(self, r, c, moves):
-        pass
+        self.getRookMoves(r, c, moves)
+        self.getBishopMoves(r, c, moves)
 
     def getKingMoves(self, r, c, moves):
         pass

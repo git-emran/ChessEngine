@@ -159,7 +159,18 @@ class GameState:
         self.getBishopMoves(r, c, moves)
 
     def getKingMoves(self, r, c, moves):
-        pass
+        kingMoves = (
+            (-1, -1),
+            (-1, 0),
+            (-1, 1),
+            (0, -1),
+            (0, 1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+        )
+
+        allyColor = "w" if self.white else "b"
 
 
 class Move:

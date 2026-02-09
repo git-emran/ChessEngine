@@ -172,6 +172,15 @@ class GameState:
 
         allyColor = "w" if self.white else "b"
 
+        for i in range(8):
+            endRow = r + kingMoves[i][0]
+            endCol = c + kingMoves[i][1]
+
+            if 0 <= endRow < 8 and 0 <= endCol <= 8:
+                endPiece = self.board[endRow][endCol]
+                if endPiece[0] != allyColor:
+                    moves.append(Move(r, c), (endRow, endCol), self.board)
+
 
 class Move:
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}

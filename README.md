@@ -6,7 +6,7 @@ I will also guide you through the process of creating a chess engine.
 
 #### How to run
 
-Clone or download the project
+Clone or download the project, run `python run ChessEngine.py` to open the game locally. Keep in mind This game uses `pygame`
 
 ### Architecture
 
@@ -14,4 +14,4 @@ Currently the The core logic and game piece logic has been seperated into `Chess
 
 ### Chess Engine Design
 
-### Game State
+Information coming soon...

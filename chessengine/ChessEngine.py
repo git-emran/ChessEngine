@@ -50,6 +50,7 @@ class GameState:
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
 
+            # update the kings position if needed
             if move.pieceMoved == "wk":
                 self.whiteKingLocation = (move.startRow, move.startRow)
             elif move.pieceMoved == "bk":
@@ -58,7 +59,15 @@ class GameState:
     # All moves considering checks
 
     def getValidMoves(self):
-        return self.getAllPossibleMoves()
+        # 1. Generate all possible moves
+        moves = self.getAllPossibleMoves()
+
+        # 2. for each move, make the move
+
+        # 3. genrate all opponents moves
+        # 4. for each of your opponents moves check if king is attacked
+        # 5. If they do attack, not a valid move
+        return moves
 
     # All moves without considering checks
 

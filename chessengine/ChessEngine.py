@@ -22,14 +22,26 @@ class GameState:
 
         self.whiteToMove = True
         self.moveLog = []
+        self.whiteKingLocation = (7, 4)
+        self.blackKingLocation = (0, 4)
 
     # Takes a move as a parameter and executes it
 
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.pieceMoved
+
+        # log the move so we can update later
         self.moveLog.append(move)
+
+        # swap players
         self.whiteToMove = not self.whiteToMove
+
+        # update the kings location if moved
+        if move.pieceMoved == "wk":
+            self.whiteKingLocation = (move.endRow, move.endCol)
+        elif move.pieceMoved == "bk":
+            self.blackKingLocation = (move.endRow, move.endCol)
 
     def undoMove(self):
         if len(self.moveLog) != 0:
@@ -37,6 +49,11 @@ class GameState:
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
+
+            if move.pieceMoved == "wk":
+                self.whiteKingLocation = (move.startRow, move.startRow)
+            elif move.pieceMoved == "bk":
+                self.blackKingLocation = (move.startRow, move.startRow)
 
     # All moves considering checks
 
@@ -204,8 +221,9 @@ class Move:
             return self.moveID == other.moveID
 
     def getChessNotation(self):
-        return self.getRankFile(self.startRow, self.startCol)
-        +self.getRankFile(self.endRow, self.endCol)
+        return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(
+            self.endRow, self.endCol
+        )
 
     def getRankFile(self, r, c):
         return self.colsToFiles[c] + self.rowsToRanks[r]

@@ -108,7 +108,7 @@ class GameState:
     # All moves without considering checks
 
     def getAllPossibleMoves(self):
-        moves = [Move((6, 4), (4, 4), self.board)]
+        moves = []
 
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):

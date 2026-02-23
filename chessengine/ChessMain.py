@@ -33,7 +33,7 @@ def main():
     screen.fill(p.Color("white"))
     gs = ChessEngine.GameState()
     validMoves = gs.getValidMoves()
-    moveMade = gs.getValidMoves()
+    moveMade = False
     loadImages()
     running = True
     sqSelected = ()  # no squares selected initially, keep track of last click

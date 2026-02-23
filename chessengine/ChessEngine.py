@@ -13,7 +13,7 @@ class GameState:
 
         self.moveFunctions = {
             "p": self.getPawnMoves,
-            "R": self.getPawnMoves,
+            "R": self.getRookMoves,
             "N": self.getKnightMoves,
             "B": self.getBishopMoves,
             "Q": self.getQueenMoves,
@@ -38,9 +38,9 @@ class GameState:
         self.whiteToMove = not self.whiteToMove
 
         # update the kings location if moved
-        if move.pieceMoved == "wk":
+        if move.pieceMoved == "wK":
             self.whiteKingLocation = (move.endRow, move.endCol)
-        elif move.pieceMoved == "bk":
+        elif move.pieceMoved == "bK":
             self.blackKingLocation = (move.endRow, move.endCol)
 
     def undoMove(self):
@@ -51,10 +51,10 @@ class GameState:
             self.whiteToMove = not self.whiteToMove
 
             # update the kings position if needed
-            if move.pieceMoved == "wk":
-                self.whiteKingLocation = (move.startRow, move.startRow)
-            elif move.pieceMoved == "bk":
-                self.blackKingLocation = (move.startRow, move.startRow)
+            if move.pieceMoved == "wK":
+                self.whiteKingLocation = (move.startRow, move.startCol)
+            elif move.pieceMoved == "bK":
+                self.blackKingLocation = (move.startRow, move.startCol)
 
     # All moves considering checks
 
@@ -63,11 +63,35 @@ class GameState:
         moves = self.getAllPossibleMoves()
 
         # 2. for each move, make the move
+        for i in range(len(moves)-1, -1, -1):
+            self.makeMove(moves[i])
+            # 3. generate all opponents moves
+            # 4. for each of your opponents moves check if king is attacked
+            self.whiteToMove = not self.whiteToMove
+            if self.inCheck():
+                moves.remove(moves[i])
 
-        # 3. genrate all opponents moves
-        # 4. for each of your opponents moves check if king is attacked
-        # 5. If they do attack, not a valid move
+            self.whiteToMove = not self.whiteToMove
+            self.undoMove()
         return moves
+
+    # determine if the current player is in check
+    def inCheck(self):
+        if self.whiteToMove:
+            return self.squareUnderAttack(self.whiteKingLocation[0], self.whiteKingLocation[1])
+        else:
+            return self.squareUnderAttack(self.blackKingLocation[0], self.blackKingLocation[1])
+
+    def squareUnderAttack(self, r, c):
+        self.whiteToMove = not self.whiteToMove #switches to opponent
+        oppMoves = self.getAllPossibleMoves()
+        self.whiteToMove = not self.whiteToMove #switches back
+        for move in oppMoves:
+            if move.endRow == r and move.endCol == c:
+                return True
+        return False
+
+
 
     # All moves without considering checks
 
@@ -196,16 +220,16 @@ class GameState:
             (1, 1),
         )
 
-        allyColor = "w" if self.white else "b"
+        allyColor = "w" if self.whiteToMove else "b"
 
         for i in range(8):
             endRow = r + kingMoves[i][0]
             endCol = c + kingMoves[i][1]
 
-            if 0 <= endRow < 8 and 0 <= endCol <= 8:
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
                 endPiece = self.board[endRow][endCol]
                 if endPiece[0] != allyColor:
-                    moves.append(Move(r, c), (endRow, endCol), self.board)
+                    moves.append(Move((r, c), (endRow, endCol), self.board))
 
 
 class Move:

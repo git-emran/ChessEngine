@@ -24,6 +24,8 @@ class GameState:
         self.moveLog = []
         self.whiteKingLocation = (7, 4)
         self.blackKingLocation = (0, 4)
+        self.checkMate = False
+        self.staleMate = False
 
     # Takes a move as a parameter and executes it
 
@@ -73,6 +75,16 @@ class GameState:
 
             self.whiteToMove = not self.whiteToMove
             self.undoMove()
+
+        if len(moves) == 0:
+            if self.inCheck():
+                self.checkMate = True
+            else:
+                self.staleMate = True
+
+        else:
+            self.checkMate = False
+            self.staleMate = False
         return moves
 
     # determine if the current player is in check

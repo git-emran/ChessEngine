@@ -24,6 +24,9 @@ class GameState:
         self.moveLog = []
         self.whiteKingLocation = (7, 4)
         self.blackKingLocation = (0, 4)
+        self.inCheck = False
+        self.pins = []
+        self.checks = []
         self.checkMate = False
         self.staleMate = False
 
@@ -70,14 +73,14 @@ class GameState:
             # 3. generate all opponents moves
             # 4. for each of your opponents moves check if king is attacked
             self.whiteToMove = not self.whiteToMove
-            if self.inCheck():
+            if self.inCheck:
                 moves.remove(moves[i])
 
             self.whiteToMove = not self.whiteToMove
             self.undoMove()
 
         if len(moves) == 0:
-            if self.inCheck():
+            if self.inCheck:
                 self.checkMate = True
             else:
                 self.staleMate = True

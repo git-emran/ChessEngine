@@ -53,9 +53,9 @@ class GameState:
 
         # update the kings location if moved
         if move.pieceMoved == "wK":
-            self.whiteKingLocation = (move.endRow, move.endCol)
+            self.whiteKingLocation = (move.startRow, move.startCol)
         elif move.pieceMoved == "bK":
-            self.blackKingLocation = (move.endRow, move.endCol)
+            self.blackKingLocation = (move.startRow, move.startCol)
 
         if move.isPawnPromotion:
             self.board[move.endRow][move.endCol] = move.promotionPiece + "Q"
@@ -103,8 +103,31 @@ class GameState:
             elif move.pieceMoved == "bK":
                 self.blackKingLocation = (move.startRow, move.startCol)
 
-    # All moves considering checks
+            if move.isEnpassantMove:
+                self.board[move.endRow][move.endCol] = "--"
+                self.board[move.startRow][move.endCol] = move.pieceCaptured
 
+            self.enpassantPossibleLog.pop()
+            self.enpassantPossible = self.enpassantPossibleLog[-1]
+
+            self.castleRightsLog.pop()
+            self.currentCastlingRights = self.castleRightsLog[-1]
+
+            if move.isCastleMove:
+                if move.endCol - move.startCol == 2:
+                    self.board[move.endRow][move.endCol + 1] = self.board[move.endRow][
+                        move.endCol - 1
+                    ]
+                    self.board[move.endRow][move.endCol - 1] = "--"
+                else:
+                    self.board[move.endRow][move.endCol - 2] = self.board[move.endRow][
+                        move.endCol + 1
+                    ]
+                    self.board[move.endRow][move.endCol + 1] = "--"
+            self.checkMate = False
+            self.staleMate = False
+
+    # All moves considering checks
     def getValidMoves(self):
         # 1. Generate all possible moves
         moves = []

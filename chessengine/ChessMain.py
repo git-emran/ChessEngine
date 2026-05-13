@@ -208,7 +208,7 @@ def drawPieces(screen, board):
 
 def drawMoveLog(screen, game_state, font):
     move_log_rect = p.Rect(BOARD_WIDTH, 0, MOVE_LOG_PANEL_WIDTH, MOVE_LOG_PANEL_HEIGHT)
-    p.draw.rect(screen, p.Color("hot pink"), move_log_rect)
+    p.draw.rect(screen, p.Color("dimgray"), move_log_rect)
     move_log = game_state.move_log
     move_texts = []
     for i in range(0, len(move_log), 2):
@@ -290,4 +290,3 @@ def animateMove(move, screen, board, clock):
 
 if __name__ == "__main__":
     main()
-

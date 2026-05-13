@@ -2,6 +2,8 @@
 
 This is a chess engine written in python. The AI is designed to be a challenging and dynamic gameplay experience.
 
+<img width="1792" height="1408" alt="chess" src="https://github.com/user-attachments/assets/b2299984-41ad-4cde-a0ca-29209fc83e31" />
+
 ## Features
 
  1	Single-Player Mode: Play against an AI opponent with adjustable difficulty levels. 2	Interactive GUI: Drag and drop chess pieces with smooth animations.
